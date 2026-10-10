@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Analisis Statistik Deskriptif Gaji Software Engineer</title>
+<title>Analisis Statistik Gaji Software Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
@@ -66,8 +66,8 @@ tbody tr:nth-child(even){background:var(--stripe)}tbody tr:hover{background:var(
 .tools,.controls,.bottom,#filterbar,.stateinfo{display:none!important}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}.chart,.panel,.stat{break-inside:avoid}.scroll{max-height:none;overflow:visible}}
 </style></head><body>
 <div class="shell"><div class="topbar"><div class="brand">DATA<span>LAB</span> / Gaji Software Engineer</div><div class="tools"><button class="btn" id="themebtn" onclick="toggleTheme()">☀ Mode terang</button><button class="btn" onclick="printPage()">⎙ Cetak / PDF</button><button class="btn" onclick="downloadCSV()">↓ Ekspor CSV</button></div></div>
-<header class="hero"><div class="eyebrow">Dashboard interaktif • Analisis data</div>
-<h1>Analisis Statistik Deskriptif dan Visualisasi Data Gaji Software Engineer untuk Mengidentifikasi Pola Distribusi Gaji, Perbedaan Estimasi Gaji, serta Hubungannya dengan Rating Perusahaan.</h1>
+<header class="hero"><div class="eyebrow">• Dashboard Analisis data</div>
+<h1>Analisis Statistik Deskriptif dan Visualisasi Data Gaji Software Engineer.</h1>
 
 </header></div>
 <main class="wrap"><div class="stats" id="stats"></div>
@@ -185,10 +185,10 @@ function summaryStats(){
  const a=salaries,k=a.length;if(!k){document.querySelector('#sumtable').textContent='Data gaji tidak tersedia.';return}
  const mean=avg(a),md=med(a),sd=k>1?Math.sqrt(a.reduce((s,v)=>s+(v-mean)**2,0)/(k-1)):0,mn=Math.min(...a),mx=Math.max(...a);
  const f=v=>v.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+' ribu USD';
- const rows=[['Jumlah data tersedia',k.toLocaleString('id-ID')],['Rata-rata (mean)',f(mean)],['Median',f(md)],['Simpangan baku sampel',f(sd)],['Nilai minimum',f(mn)],['Nilai maksimum',f(mx)]];
+ const rows=[['Jumlah data tersedia',k.toLocaleString('id-ID')],['Rata-rata (mean)',f(mean)],['Median',f(md)],['Sampel',f(sd)],['Nilai minimum',f(mn)],['Nilai maksimum',f(mx)]];
  document.querySelector('#sumtable').innerHTML='<div class="sumhead"><span>Ukuran statistik</span><span>Titik tengah gaji</span></div>'+rows.map(r=>`<div class="sumrow"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
  const usd=v=>'USD '+Math.round(v*1000).toLocaleString('id-ID');
- document.querySelector('#sumtext').textContent=`Rata-rata titik tengah gaji sekitar ${usd(mean)}, sedangkan median sekitar ${usd(md)}. `+(mean>md?'Rata-rata yang lebih tinggi daripada median mengindikasikan bahwa nilai gaji yang relatif tinggi mungkin menarik distribusi ke arah kanan.':mean<md?'Rata-rata yang lebih rendah daripada median mengindikasikan bahwa nilai gaji yang relatif rendah mungkin menarik distribusi ke arah kiri.':'Rata-rata dan median hampir sama, sehingga distribusi relatif simetris.')+` Simpangan baku (sampel) sebesar ${usd(sd)} menunjukkan seberapa jauh gaji umumnya menyebar dari rata-rata. Hal ini dapat diperiksa lebih lanjut menggunakan histogram (Diagram 1).`;
+ document.querySelector('#sumtext').textContent=`Rata-rata titik tengah gaji sekitar ${usd(mean)}, sedangkan median sekitar ${usd(md)}. `+(mean>md?'Rata-rata yang lebih tinggi daripada median mengindikasikan bahwa nilai gaji yang relatif tinggi mungkin menarik distribusi ke arah kanan.':mean<md?'Rata-rata yang lebih rendah daripada median mengindikasikan bahwa nilai gaji yang relatif rendah mungkin menarik distribusi ke arah kiri.':'Rata-rata dan median hampir sama, sehingga distribusi relatif simetris.')+` Sampel sebesar ${usd(sd)} menunjukkan seberapa jauh gaji umumnya menyebar dari rata-rata. Hal ini bisa diperiksa lebih lanjut menggunakan histogram (Diagram 1).`;
 }
 function conclusion(){
  const mean=avg(salaries),md=med(salaries),mn=Math.min(...salaries),mxv=Math.max(...salaries);
@@ -197,7 +197,7 @@ function conclusion(){
  const stTop=Object.entries(stateCount).sort((a,b)=>b[1]-a[1])[0],sm=stateMedians();
  const rm=med(salaryRows.filter(remote).map(r=>n(r[C.mid]))),nm=med(salaryRows.filter(r=>val(r,C.loc)&&!remote(r)).map(r=>n(r[C.mid])));
  const items=[];
- items.push(`<b>Distribusi gaji.</b> Titik tengah gaji berkisar ${money(mn)}–${money(mxv)} dengan rata-rata ${money(mean)} dan median ${money(md)}. Kelompok terbanyak ada pada ${p1.label} ribu USD (${pct(p1.n,salaries.length)} lowongan). ${mean>md?'Rata-rata lebih besar dari median, tanda distribusi condong ke kanan: sebagian kecil gaji yang sangat tinggi menaikkan rata-rata, sehingga median lebih mewakili gaji yang umum.':mean<md?'Rata-rata lebih kecil dari median, tanda distribusi condong ke kiri.':'Rata-rata dan median hampir sama, tanda distribusi relatif simetris.'}`);
+ items.push(`<b>Distribusi gaji, </b> Titik tengah gaji berkisar ${money(mn)}–${money(mxv)} dengan rata-rata ${money(mean)} dan median ${money(md)}. Kelompok terbanyak ada pada ${p1.label} ribu USD (${pct(p1.n,salaries.length)} lowongan). ${mean>md?'Rata-rata lebih besar dari median, tanda distribusi condong ke kanan: sebagian kecil gaji yang sangat tinggi menaikkan rata-rata, sehingga median lebih mewakili gaji yang umum.':mean<md?'Rata-rata lebih kecil dari median, tanda distribusi condong ke kiri.':'Rata-rata dan median hampir sama, tanda distribusi relatif simetris.'}`);
  if(bs.length>1)items.push(`<b>Perbedaan sumber estimasi.</b> Rata-rata gaji tertinggi ada pada ${esc(bs[0].x)} (${money(bs[0].m)}), sedangkan terendah pada ${esc(bs[bs.length-1].x)} (${money(bs[bs.length-1].m)}), selisih ${money(bs[0].m-bs[bs.length-1].m)}. Perbedaan ini dapat berasal dari cara estimasi maupun jenis lowongan yang dicakup tiap sumber, sehingga tidak bisa langsung disimpulkan salah satu sumber lebih akurat.`);
  if(stTop)items.push(`<b>Wilayah.</b> Lowongan terbanyak ada di ${stTop[0]} (${ST[stTop[0]]||stTop[0]}) dengan ${stTop[1]} lowongan.${sm.length?` Di antara negara bagian dengan minimal 15 data gaji, median tertinggi ada di ${sm[0].x} (${ST[sm[0].x]||sm[0].x}) sebesar ${money(sm[0].m)} dan terendah di ${sm[sm.length-1].x} (${ST[sm[sm.length-1].x]||sm[sm.length-1].x}) sebesar ${money(sm[sm.length-1].m)}.`:''}`);
  if(rm!==null&&nm!==null)items.push(`<b>Remote dan non-remote.</b> Median gaji lowongan Remote ${money(rm)}, sedangkan lowongan non-remote ${money(nm)} (selisih ${money(Math.abs(rm-nm))}${rm>nm?', Remote lebih tinggi':', non-remote lebih tinggi'}).`);
